@@ -3,20 +3,26 @@
 require './isbn'
 
 RSpec.describe ISBN do
-  subject { ISBN.new }
-  let(:test_isbn) { 978014300723 }
+  let(:test_isbn) { ISBN.new(978_014_300_723) }
+  let(:zero_check_digit_isbn) { ISBN.new(978_214_300_703) }
 
-  describe "#check_digit" do
-    it "is correct" do
-      expect(subject.check_digit(test_isbn)).to eq(4)
+  describe '#check_digit' do
+    it 'is correct for isbn where check digit result is not zero' do
+      expect(test_isbn.check_digit).to eq(4)
+    end
+
+    it 'is correct for isbn where check digit result is zero' do
+      expect(zero_check_digit_isbn.check_digit).to eq(0)
     end
   end
 
-  describe "#complete_isbn" do
-    it "is correct" do
-      result = subject.complete_isbn(test_isbn)
+  describe '#complete_isbn' do
+    it 'is correct for isbn where check digit result is not zero' do
+      expect(test_isbn.complete_isbn).to eq(9_780_143_007_234)
+    end
 
-      expect(result).to eq(9780143007234)
+    it 'is correct for isbn where check digit result is zero' do
+      expect(zero_check_digit_isbn.complete_isbn).to eq(9_782_143_007_030)
     end
   end
 end
